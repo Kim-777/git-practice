@@ -1,10 +1,6 @@
 team: Leopards
 
-<<<<<<< HEAD
-manager: Nicholas
-=======
 manager: Melissa
->>>>>>> 568239c (Edit Leopards)
 
 coach: Oscar
 
@@ -13,3 +9,4 @@ members:
   - William
   - David
   - Olivia
+  - Evie
