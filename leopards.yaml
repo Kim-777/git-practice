@@ -1,1 +1,8 @@
-leopards: 10
+team: Leopards
+
+manager: Luke
+
+members:
+  - Linda
+  - William
+  - David
