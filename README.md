@@ -31,6 +31,10 @@
 이전의 커밋으로 돌아갑니다.
 `git reset [--hard | --soft] "돌아갈 커밋 해쉬" (아무것도 입력안하면 이전 커밋)`
 
+- `soft` : `repository`에서 `staging area`로 이동
+- `--mixed(default)` : `repository`에서 `working directory`로 이동
+- `--hard` : 수정 사항을 완전히 삭제
+
 #### revert
 
 선택한 커밋 상태를 되돌린 후, 새로운 커밋을 생성합니다.
@@ -128,3 +132,78 @@
   - `git pull --no-reabes` merge 방식
   - `git pull --rebase` rebase 방식
 - 원격을 로컬의 내역으로 강제 할 경우 `git push --force` (혼자하는 프로젝트나, 팀원들과 협의가 된 경우 사용하길 권장합니다.)
+
+#### 원격 브런치 잘 사용하기
+
+- 새로운 로컬 브런치 원격에 저장하기
+
+1. 로컬에서 새로운 브런치를 만듭니다. `git branch new(새로운 브런치 이름)`.
+2. 이 new 브런치에서 작업 후 원격레포로 커밋 내역을 저장하려면 `git push`를 진행할 겁니다.
+3. 하지만 원격 브런치에 로컬 브런치 `new`에 해당 내용을 저장할 브런치가 명시되어 있지 않기 떄문에 `git`은 어디에 저장할지 모르겠다고 `git push --set-upstream origin new`라는 명령어를 통해 원격에 `new`라는 브런치를 만들겠냐고 물어봅니다.
+4. 그대로 진행하시면 원격에 로컬 브런치와 동일한 이름의 브런치를 생성할 수 있습니다!😄
+
+- 새로운 원격 브런치 로컬에 동기화하기
+  브런치를 확인할 경우 `git branch -a(--all)`로 원격의 브런치까지 전부 확인할 수 있습니다.
+  `git fetch`로 원격저장소의 내용을 로컬에 동기화 해줍니다.
+
+1. 원격 브런치에 새로운 브런치 `from-remote`가 있다고 가정합니다.
+2. 로컬 브런치에서 `git fetch` 명령어를 통해 새로운 원격 브런치의 존재를 알아 차립니다.
+3. `git switch -t origin/from-remote`를 통해 로컬에 원격저장소 브런치와 씽크되는 로컬브런치를 만들어 줍니다.
+
+#### 원격 브런치 삭제하기
+
+`git push (원격저장소 이름) --delete (원격의 지울 브런치명)`
+
+---
+
+### git의 개념
+
+깃의 기본 개념을 정리해봅니다.
+
+#### 3가지 공간
+
+[이 개념은 잘 정리되어 있는 링크로 대체 합니다.](https://iseunghan.tistory.com/322)
+
+#### 파일의 삭제와 이동
+
+그냥 파일을 삭제하면 파일을 삭제한 내역이 `working directory`에 저장됩니다. 하지만 `git rm "삭제할 파일명"`으로 삭제하면 `staging areat`에 삭제 내역이 저장되어 바로 커밋을 진행할 수 있습니다.
+
+그냥 파일을 변경하면 "기존 파일이 삭제됨", "새로운 파일이 생김" 두 가지 내역이 생성되지만 `git mv "변경할 파일 이름" "변경될 파일 이름"`을 진행할 경우 `staging area`에 `renamed`라는 내역으로 파일 이름이 변경됨을 표시합니다.
+
+`staging area`에 저장되어 있는 내역들을 다시 `working directory`로 옮기고 싶을 경우 `git restore --staged "파일 이름"(.로 사용시 전체 파일)` 만약 `--staged`를 사용하지 않으면 변경사항을 전부 리셋합니다!
+
+#### HEAD 사용하기
+
+`git checkout HEAD[^]` 를 통해 `HEAD`를 이동 시킬 수 있습니다.
+
+- `^ or ~`는 이동하고 싶은 갯수 만큼 사용할 수 있습니다.
+  > 예시
+  > 뒤로 2번 이동 `^^`
+  > 뒤로 5번 이동 `~~~~~`
+  > 커밋 해시로도 checkout이 가능 git checkout "커밋 해시 이름"
+- 현재 위치한 브런치를 기준으로 `commit`을 이동하며 다닌다고 생가하면 편합니다.
+- 헤더의 이동을 돌리고 싶으면 `git checkout -`를 사용
+
+`HEAD`는 익명의 브런치 입니다. 즉, 이동되어 있는 커밋에서 내용을 변경 후 커밋하고 싶다면 익명 브런치에 이름을 달아 줍니다. `git switch -c "새로운 브런치 이름"`으로 브런치를 만든 후 작업하면 됩니다😜
+
+#### fetch와 pull의 차이점
+
+- `fetch` : 원격 저장소의 최신 커밋을 로컬로 가져오기만 합니다.
+- `pull` : 원격 저장소의 최신 커밋을 로컬로 가져와 `merge` 또는 `rebase` 해줍니다.
+
+---
+
+### 각종 설정
+
+`git config`에 대해서 살펴봅시다!
+
+- `--global` 옵션을 붙여주면 전역 설정을 의미합니다.
+- `--list` 현재 프로젝트의 컨피그를 보여줍니다.
+- `-e`
+- `git config --global core.editor "code --wait"`로 에디터 변경할 수 있습니다.
+
+#### 유용한 설정들
+
+- `git config --global core.autocrlf (윈도우: true / 맥: input)`
+- `git config pull.rebase "false (or true)`
+- `git config --global push.default current` push시 로컬과 동일한 브랜치명으로
