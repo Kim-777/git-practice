@@ -76,7 +76,7 @@
 
 `git rebase "리베이스가 되어지는 대상 브런치"`
 
-이렇게 `rebase`를 진행하면 아직 브런치가 `rebase` 되어진 브런치의 커밋까지 도달하지 못한 상태 이기 때문에 `git switch "리베이스가 되어지는 대상 브런치"`로 이동 후 `git merge "리베이스할 브펀치"`로 `fast-forward`를 시켜줍니다.
+이렇게 `rebase`를 진행하면 아직 브런치가 `rebase` 되어진 브런치의 커밋까지 도달하지 못한 상태 이기 때문에 `git switch "리베이스가 되어지는 대상 브런치"`로 이동 후 `git merge "리베이스할 치"`로 `fast-forward`를 시켜줍니다.
 
 ### 브런치 충돌 해결하기
 
@@ -127,7 +127,7 @@
 
 - `push`를 진행했을 때, 원격 저장소에 `pull` 받아야 할 사항이 있다면 경고와 함꼐 `push`가 진행되지 않습니다.
 - `push` 할 내용이 있을 시 `pull` 하는 두가지 방법
-  - `git pull --no-reabes` merge 방식
+  - `git pull --no-rebase` merge 방식
   - `git pull --rebase` rebase 방식
 - 원격을 로컬의 내역으로 강제 할 경우 `git push --force` (혼자하는 프로젝트나, 팀원들과 협의가 된 경우 사용하길 권장합니다.)
 
